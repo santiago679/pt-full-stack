@@ -1,35 +1,25 @@
-const IAdminRepository = require('../../../domain/repositories/IAdminRepository')
 const AdminModel = require('../models/admin')
+const { IAdminRepository } = require('../../../domain/ISecondary/IAdminRepository')
+const { comparePassword } = require('../../../../shared/utils/util');
+const { ValidationException } = require('../../../../shared/exceptions/ValidationException');
 
 class AdminRepositoryImpl extends IAdminRepository {
 
-    async validateCredentials(admin) {
+    async validateCredentials(user) {
 
-        // const ingresarUsuario = async (req, res, next) => {
-//     try {
-//         const { email, password } = req.body;
+        try {
+            const userInDatabase = await AdminModel.findOne({ where: {email: user.email} })
+            const validUser = await comparePassword(user.password, userInDatabase.password);
 
-//         const usuarioIngresar = await UsuarioService.buscarUsuario(email);
-
-//         if (!usuarioIngresar || !(await bcrypt.compare(password, usuarioIngresar.password))) {
-//             const error = new Error('Credenciales incorrectas');
-//             error.statusCode = 401;
-//             throw error;
-//         }
-
-//         const token = jwt.sign({ id: usuarioIngresar.id, email: usuarioIngresar.email }, process.env.JWT_SECRET, { expiresIn: '1h' });
-
-//         res.json({
-//             data: { token },
-//             status: 200,
-//             message: 'Ingreso exitoso'
-//         });
-
-//     } catch (err) {
-//         next(err);
-//     }
-// };
-
+            if(!validUser) {
+                throw new ValidationException();
+            }
+            return true
+            
+        } catch (error) {
+            throw new Error('Error getting admin in database' + error.message)
+        }
     }
 }
 
+module.exports = { AdminRepositoryImpl }

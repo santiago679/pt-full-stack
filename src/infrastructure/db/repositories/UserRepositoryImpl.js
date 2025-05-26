@@ -1,5 +1,6 @@
-const ICommonRepository = require('../../../domain/repositories/ICommonRepository')
 const UserModel = require('../models/user');
+const { User } = require('../../../domain/entities/User')
+const { ICommonRepository } = require('../../../domain/ISecondary/ICommonRepository')
 const { DuplicateUserException } = require('../../../../shared/exceptions/DuplicateUserException');
 
 class UserRepositoryImpl extends ICommonRepository {
@@ -15,7 +16,8 @@ class UserRepositoryImpl extends ICommonRepository {
 
   async get(numDni) {
     try {
-      return await UserModel.findOne({ where: {dni: numDni} });
+      const found = await UserModel.findOne({ where: {dni: numDni} });
+      return found ? new User(found) : null
     } 
     catch (error) {
       throw new Error('Error getting a user in database:' + error.message)
@@ -29,7 +31,8 @@ class UserRepositoryImpl extends ICommonRepository {
       if(existeUsuario) {
         throw new DuplicateUserException(); 
       }
-      return await UserModel.create(user)
+      const created = await UserModel.create(user)
+      return new User(created)
     }
     catch (error) {
       throw new Error('Error adding user in database:' + error.message)
@@ -43,7 +46,8 @@ class UserRepositoryImpl extends ICommonRepository {
       if(existeUsuario == null) {
         throw new Error("User not found")
       }
-      return await UserModel.update(user, { where: {dni: user.dni} });
+      const updated = UserModel.update(user, { where: {dni: user.dni} });
+      return new User(updated) 
     } 
     catch (error) {
       throw new Error("Error editing user in database" + error.message)
@@ -65,4 +69,4 @@ class UserRepositoryImpl extends ICommonRepository {
   };
 }
 
-module.exports = UserRepositoryImpl;
+module.exports = { UserRepositoryImpl };

@@ -1,4 +1,3 @@
-// Este archivo define el contrato del repositorio
 class ICommonRepository {
 
     async getAll() {
@@ -22,4 +21,4 @@ class ICommonRepository {
     }
 }
 
-module.exports = ICommonRepository;
+module.exports = { ICommonRepository };

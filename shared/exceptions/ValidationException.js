@@ -8,6 +8,11 @@ class ValidationException extends Error {
       Error.captureStackTrace(this, ValidationException);
     }
   }
+
+  constructor() {
+    super("One or more validation errors occurred.");
+    this.name = "ValidationException";
+  }
 }
 
 module.exports = { ValidationException }
