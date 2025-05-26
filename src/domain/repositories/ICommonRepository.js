@@ -13,7 +13,7 @@ class ICommonRepository {
         throw new Error('Method "add" must be implemented');
     }
 
-    async edit(id, user) {
+    async edit(user) {
         throw new Error('Method "edit" must be implemented');
     }
 
