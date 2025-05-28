@@ -1,6 +1,6 @@
 const UserModel = require('../models/user');
 const { User } = require('../../../domain/entities/User')
-const { ICommonRepository } = require('../../../domain/ISecondary/ICommonRepository')
+const { ICommonRepository } = require('../../../ports/output/ICommonRepository')
 const { DuplicateUserException } = require('../../../../shared/exceptions/DuplicateUserException');
 
 class UserRepositoryImpl extends ICommonRepository {

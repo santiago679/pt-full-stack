@@ -1,5 +1,5 @@
-const { IAdminServices } = require('../IPrimary/IAdminServices')
-const { IAdminRepository } = require('../ISecondary/ICommonRepository')
+const { IAdminServices } = require('../../ports/input/IAdminServices')
+const { IAdminRepository } = require('../../ports/output/IAdminRepository')
 
 class AdminServices extends IAdminServices {
 

@@ -1,32 +1,30 @@
-const { ICommonServices } = require('../IPrimary/ICommonServices')
-const { ICommonRepository } = require('../ISecondary/ICommonRepository')
+const { ICommonServices } = require('../../ports/input/ICommonServices')
+//const { ICommonRepository } = require('../../ports/output/ICommonRepository')
 
 class UserServices extends ICommonServices {
-
-    repository = new ICommonRepository()
 
     constructor(repository) {
         this.repository = repository
     }
 
     async getAll() {
-        await this.repository.getAll()
+        return await this.repository.getAll()
     }
 
     async get(id) {
-        await this.repository.get(id)
+        return await this.repository.get(id)
     }
     
     async add(user) {
-        await this.repository.add(user)
+        return await this.repository.add(user)
     }
     
     async edit(user) {
-        await this.repository.edit(user)
+        return await this.repository.edit(user)
     }
     
     async remove(id) {
-        await this.repository.remove(id)
+        return await this.repository.remove(id)
     }
 }
 
