@@ -1,7 +1,7 @@
 const { ICommonServices } = require('../../ports/input/ICommonServices')
 //const { ICommonRepository } = require('../../ports/output/ICommonRepository')
 
-class UserServices extends ICommonServices {
+class UserServicesImpl extends ICommonServices {
 
     constructor(repository) {
         this.repository = repository
@@ -28,4 +28,4 @@ class UserServices extends ICommonServices {
     }
 }
 
-module.exports = { UserServices }
+module.exports = { UserServicesImpl }
