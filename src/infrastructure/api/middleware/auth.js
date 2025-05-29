@@ -1,4 +1,4 @@
-const jwt = require('jsonwebtoken');
+const { validateToken } = require('../../../../shared/utils/util');
 
 const authMiddleware = (req, res, next) => {
     const authHeader = req.header('Authorization');
@@ -10,8 +10,7 @@ const authMiddleware = (req, res, next) => {
     const token = authHeader.replace('Bearer ', '');
 
     try {
-        const decoded = jwt.verify(token, process.env.JWT_SECRET);
-
+        const decoded = validateToken(token);
         req.admin = decoded; 
         next();
 

@@ -14,4 +14,9 @@ function generateToken(user) {
     return token
 }
 
-module.exports = { hashPassword, comparePassword, generateToken }
+function validateToken(token) {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET)
+    return decoded
+}
+
+module.exports = { hashPassword, comparePassword, generateToken, validateToken }

@@ -10,7 +10,6 @@ class AdminServicesImpl extends IAdminServices {
     async validateCredentials(user) {
         return await this.repository.validateCredentials(user);
     }
-
 }
 
 module.exports = { AdminServicesImpl }
