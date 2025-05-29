@@ -1,11 +1,15 @@
-// const errorHandler = (err, req, res, next) => {
-//     const statusCode = err.statusCode || 500;
+function errorHandler(err, req, res, next) {
   
-//     res.status(statusCode).json({
-//       data: null,
-//       status: statusCode,
-//       message: err.message || 'Error interno del servidor'
-//     });
-// };
-  
-// module.exports = errorHandler;
+  console.error(err);
+
+  const statusCode = err.status || 500;
+
+  const message = err.message || 'Error interno del servidor';
+
+  res.status(statusCode).json({
+    error: true,
+    message: message
+  });
+}
+
+module.exports = errorHandler;

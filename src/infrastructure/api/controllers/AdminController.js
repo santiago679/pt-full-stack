@@ -5,19 +5,28 @@ const userLogin = async (req, res, repository, next) => {
     try {
         const { admin } = req.body;
 
-        // Instancia del servicio pasando el repositorio
+        if (!admin || !admin.email || !admin.password) {
+            return res.status(400).json({
+                message: "Email y contraseña son obligatorios",
+                status: 400
+            });
+        }
+
+        // Instanciar el servicio pasando el repositorio
         const adminService = new AdminServicesImpl(repository);
 
-        const isValid = await adminService.validateCredentials(admin);
+        // Validar credenciales
+        const validUser = await adminService.validateCredentials(admin);
 
-        if (!isValid) {
+        if (!validUser) {
             return res.status(401).json({
-                message: "Unauthorized",
+                message: "Credenciales inválidas",
                 status: 401
             });
         }
 
-        const token = generateToken(admin);
+        // Generar token usando los datos del usuario
+        const token = generateToken(validUser);
 
         return res.status(200).json({
             data: { token },
@@ -26,8 +35,8 @@ const userLogin = async (req, res, repository, next) => {
         });
 
     } catch (err) {
-        next(err);
+        return next(err);
     }
-}
+};
 
 module.exports = { userLogin };

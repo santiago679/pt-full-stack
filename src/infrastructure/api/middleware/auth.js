@@ -1,17 +1,23 @@
-// const jwt = require('jsonwebtoken');
+const jwt = require('jsonwebtoken');
 
-// const authMiddleware = (req, res, next) => {
-//     const token = req.header('Authorization');
+const authMiddleware = (req, res, next) => {
+    const authHeader = req.header('Authorization');
 
-//     if (!token) return res.status(401).json({ message: 'Acceso denegado' });
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+        return res.status(401).json({ message: 'Acceso denegado. Token no proporcionado.' });
+    }
 
-//     try {
-//         const verificado = jwt.verify(token.replace('Bearer ', ''), process.env.JWT_SECRET);
-//         req.usuario = verificado;
-//         next();
-//     } catch (error) {
-//         res.status(401).json({ message: 'Token inválido' });
-//     }
-// };
+    const token = authHeader.replace('Bearer ', '');
 
-// module.exports = authMiddleware;
+    try {
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+        req.admin = decoded; 
+        next();
+
+    } catch (error) {
+        return res.status(401).json({ message: 'Token inválido o expirado.' });
+    }
+};
+
+module.exports = authMiddleware;
