@@ -1,17 +1,11 @@
-const { UserServicesImpl } = require('../../../domain/services/UserServicesImpl');
-
-/**
- * Obtener todos los usuarios
- */
-const getAllUsers = async (req, res, repository, next) => {
+const getAllUsers = async (req, res, services, next) => {
     try {
-        const service = new UserServicesImpl(repository);
-        const result = await service.getAll();
+        const usersList = await services.getAll();
 
         return res.status(200).json({
-            data: result.rows,
-            total: result.count,
-            message: 'Usuarios obtenidos correctamente',
+            data: usersList.rows,
+            total: usersList.count,
+            message: 'Users obtained correctly',
             status: 200
         });
     } catch (error) {
@@ -19,25 +13,21 @@ const getAllUsers = async (req, res, repository, next) => {
     }
 };
 
-/**
- * Obtener usuario por DNI
- */
-const getUserByDni = async (req, res, repository, next) => {
+const getUserByDni = async (req, res, services, next) => {
     try {
         const dni = req.params.dni;
-        const service = new UserServicesImpl(repository);
-        const user = await service.get(dni);
+        const filteredUser = await services.get(dni);
 
-        if (!user) {
+        if (!filteredUser) {
             return res.status(404).json({
-                message: 'Usuario no encontrado',
+                message: 'User not found',
                 status: 404
             });
         }
 
         return res.status(200).json({
-            data: user,
-            message: 'Usuario encontrado',
+            data: filteredUser,
+            message: 'User found',
             status: 200
         });
     } catch (error) {
@@ -45,44 +35,35 @@ const getUserByDni = async (req, res, repository, next) => {
     }
 };
 
-/**
- * Agregar nuevo usuario
- */
-const createUser = async (req, res, repository, next) => {
+const createUser = async (req, res, services, next) => {
     try {
         const userData = req.body;
-        const service = new UserServicesImpl(repository);
-        const user = await service.add(userData);
+        const newUser = await services.add(userData);
 
         return res.status(201).json({
-            data: user,
-            message: 'Usuario creado exitosamente',
+            data: newUser,
+            message: 'User created successfully',
             status: 201
         });
     } catch (error) {
         if (error.name === 'DuplicateUserException') {
             return res.status(409).json({
-                message: 'Ya existe un usuario con ese DNI',
+                message: error.message,
                 status: 409
             });
         }
-
         next(error);
     }
-};
+} 
 
-/**
- * Editar usuario
- */
-const updateUser = async (req, res, repository, next) => {
+const updateUser = async (req, res, services, next) => {
     try {
         const userData = req.body;
-        const service = new UserServicesImpl(repository);
-        const updated = await service.edit(userData);
+        const updatedUser = await services.edit(userData);
 
         return res.status(200).json({
-            data: updated,
-            message: 'Usuario actualizado exitosamente',
+            data: updatedUser,
+            message: 'User updated successfully',
             status: 200
         });
     } catch (error) {
@@ -90,17 +71,13 @@ const updateUser = async (req, res, repository, next) => {
     }
 };
 
-/**
- * Eliminar usuario por DNI
- */
-const deleteUser = async (req, res, repository, next) => {
+const deleteUser = async (req, res, services, next) => {
     try {
         const dni = req.params.dni;
-        const service = new UserServicesImpl(repository);
-        await service.remove(dni);
+        await services.remove(dni);
 
         return res.status(200).json({
-            message: 'Usuario eliminado exitosamente',
+            message: 'User removed successfully',
             status: 200
         });
     } catch (error) {
