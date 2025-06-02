@@ -1,4 +1,4 @@
-const { Admin } = require('../models/admin')
+const { Admin } = require('../models')
 const { IAdminRepository } = require('../../../ports/output/IAdminRepository')
 const { comparePassword } = require('../../../../shared/utils/util');
 const { ValidationException } = require('../../../../shared/exceptions/ValidationException');

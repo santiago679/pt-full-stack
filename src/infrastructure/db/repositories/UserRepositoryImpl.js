@@ -1,4 +1,4 @@
-const { User } = require('../models/user');
+const { User } = require('../models');
 const { UserEntity } = require('../../../domain/entities/UserEntity')
 const { ICommonRepository } = require('../../../ports/output/ICommonRepository')
 const { DuplicateUserException } = require('../../../../shared/exceptions/DuplicateUserException');
