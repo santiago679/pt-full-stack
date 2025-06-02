@@ -4,6 +4,7 @@ const { ICommonServices } = require('../../ports/input/ICommonServices')
 class UserServicesImpl extends ICommonServices {
 
     constructor(repository) {
+        super();
         this.repository = repository
     }
 

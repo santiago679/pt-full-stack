@@ -1,4 +1,4 @@
-class Admin {
+class AdminEntity {
   constructor({ id, fullName, email, password }) {
     this.id = id;
     this.fullName = fullName;
@@ -7,4 +7,4 @@ class Admin {
   }
 }
 
-module.exports = { Admin };
+module.exports = { AdminEntity };

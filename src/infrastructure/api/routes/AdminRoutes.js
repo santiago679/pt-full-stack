@@ -1,4 +1,4 @@
-const AdminRouter = express.Router();
+const AdminRouter = require('express').Router();
 const { AdminRepositoryImpl } = require('../../db/repositories/AdminRepositoryImpl');
 const { AdminServicesImpl } = require('../../../domain/services/AdminServicesImpl');
 const AdminController = require('../controllers/AdminController');

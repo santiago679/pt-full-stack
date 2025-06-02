@@ -4,6 +4,7 @@ const { IAdminServices } = require('../../ports/input/IAdminServices')
 class AdminServicesImpl extends IAdminServices {
 
     constructor(repository) {
+        super();
         this.repository = repository
     }
 

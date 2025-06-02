@@ -1,5 +1,5 @@
-const UserModel = require('../models/user');
-const { User } = require('../../../domain/entities/User')
+const { User } = require('../models/user');
+const { UserEntity } = require('../../../domain/entities/UserEntity')
 const { ICommonRepository } = require('../../../ports/output/ICommonRepository')
 const { DuplicateUserException } = require('../../../../shared/exceptions/DuplicateUserException');
 
@@ -7,7 +7,7 @@ class UserRepositoryImpl extends ICommonRepository {
 
   async getAll() {
     try {
-      return await UserModel.findAndCountAll();
+      return await User.findAndCountAll();
     }
     catch(error){
       throw new Error('Error getting all users in database:' + error.message)
@@ -16,8 +16,8 @@ class UserRepositoryImpl extends ICommonRepository {
 
   async get(numDni) {
     try {
-      const found = await UserModel.findOne({ where: {dni: numDni} });
-      return found ? new User(found) : null
+      const found = await User.findOne({ where: {dni: numDni} });
+      return found ? new UserEntity(found) : null
     } 
     catch (error) {
       throw new Error('Error getting a user in database:' + error.message)
@@ -26,13 +26,13 @@ class UserRepositoryImpl extends ICommonRepository {
 
   async add(user) {
     try {
-      const existeUsuario = await UserModel.findOne({ where: {dni: user.dni} });
+      const existeUsuario = await User.findOne({ where: {dni: user.dni} });
 
       if(existeUsuario) {
         throw new DuplicateUserException(); 
       }
-      const created = await UserModel.create(user)
-      return new User(created)
+      const created = await User.create(user)
+      return new UserEntity(created)
     }
     catch (error) {
       throw new Error('Error adding user in database:' + error.message)
@@ -41,13 +41,13 @@ class UserRepositoryImpl extends ICommonRepository {
 
   async edit(user) {
     try {
-      const existeUsuario = await UserModel.findOne({ where: {dni: user.dni} });
+      const existeUsuario = await User.findOne({ where: {dni: user.dni} });
 
       if(existeUsuario == null) {
         throw new Error("User not found")
       }
-      const updated = UserModel.update(user, { where: {dni: user.dni} });
-      return new User(updated) 
+      const updated = User.update(user, { where: {dni: user.dni} });
+      return new UserEntity(updated) 
     } 
     catch (error) {
       throw new Error("Error editing user in database" + error.message)
@@ -56,12 +56,12 @@ class UserRepositoryImpl extends ICommonRepository {
 
   async remove(numDni) {
     try {
-      const existeUsuario = await UserModel.findOne({ where: {dni: numDni} });
+      const existeUsuario = await User.findOne({ where: {dni: numDni} });
 
       if(existeUsuario == null) {
         throw new Error("User not found")
       }
-      return await UserModel.destroy({ where: {dni: numDni} });
+      return await User.destroy({ where: {dni: numDni} });
     } 
     catch (error) {
       throw new Error("Error deleting user in database" + error.message)

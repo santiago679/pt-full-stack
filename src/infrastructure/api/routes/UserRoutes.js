@@ -1,4 +1,4 @@
-const UserRouter = express.Router();
+const UserRouter = require('express').Router();
 const { UserRepositoryImpl } = require('../../db/repositories/UserRepositoryImpl');
 const { UserServicesImpl } = require('../../../domain/services/UserServicesImpl');
 const UserController = require('../controllers/UserController');
